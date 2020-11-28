@@ -14,16 +14,28 @@ const buildPlot = async () => {
   const count = [
   ]
 
-  ages.forEach(age_group => {
-    count.push(
-      filtered.reduce((count, age) => {
-        if (age === age_group)
-          return count + 1
-        return count
-      }, 0)
-    )
-  })
-
+  if (document.getElementById('checkbox2').checked) {
+    ages.forEach(age_group => {
+      count.push(
+        filtered.reduce((count, age) => {
+          if (age === age_group)
+            return count + 1
+          return count
+        }, 0) / filtered.length
+      )
+    })
+  } else {
+    // counts the number of occurences for each age group
+    ages.forEach(age_group => {
+      count.push(
+        filtered.reduce((count, age) => {
+          if (age === age_group)
+            return count + 1
+          return count
+        }, 0)
+      )
+    })
+  }
   console.log(count)
 
   const data = [

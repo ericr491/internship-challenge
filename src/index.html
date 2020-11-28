@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DCEG Internship Challenge</title>
-
   <script src='./services/fetch.js'></script>
   <script src='./graphs/breastCancerHistogram.js'></script>
+  <script src='./graphs/costBarGraph.js'></script>
   <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 </head>
 <body>
-  <div id='breastCancerHistogram' style="width:1200px;height:500px;"></div>
+  <input id='checkbox2' type='checkbox' onclick="buildPlot()"> normalize? </input>
+  <div id='breastCancerHistogram' style='width: 1200px; height: 500px;'></div>
+  <input id='checkbox' type='checkbox' onclick="buildBar()"> sort by highest cost? </input>
+  <div id='costBarGraph' style='width: 1200px; height: 700px;'></div>
 </body>
 </html>
