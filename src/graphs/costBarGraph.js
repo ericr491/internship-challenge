@@ -1,26 +1,35 @@
-const buildBar = async () => {
-  const response = await fetchAllCancer()
-
+const groupLikeCancers = (cancerArray) => {
   const reducer = (object, currentPatient) => {
-    const { total_costs, ccs_diagnosis_description } = currentPatient
+    const { ccs_diagnosis_description } = currentPatient
     return object[ccs_diagnosis_description] ?
       {
         ...object,
-        [ccs_diagnosis_description]: [...object[ccs_diagnosis_description], total_costs],
+        [ccs_diagnosis_description]: [...object[ccs_diagnosis_description], currentPatient],
       }
       :
       {
         ...object,
-        [ccs_diagnosis_description]: [total_costs],
+        [ccs_diagnosis_description]: [currentPatient],
       }
   }
 
   // groups every unique cancer together
   // type object
-  const groupByUniqueCancers = response.reduce(reducer, {})
+  return cancerArray.reduce(reducer, {})
+}
+
+const buildBar = async () => {
+  const response = await fetchAllCancer()
+
+  const groupByUniqueCancers = groupLikeCancers(response)
+
+  // remove everything except total cost from the patients
+  for (propety in groupByUniqueCancers) {
+    groupByUniqueCancers[propety] = groupByUniqueCancers[propety]
+      .map(patient => patient.total_costs)
+  }
 
   const cancerNameAndCost = [
-
   ]
 
   for (propety in groupByUniqueCancers) {
@@ -50,7 +59,6 @@ const buildBar = async () => {
 
   const data = [
     {
-      histfunc: 'sum',
       x: sortedCancerNameAndCost.map(tuple => tuple[0]),
       y: sortedCancerNameAndCost.map(tuple => tuple[1]),
       type: 'bar',
@@ -70,7 +78,3 @@ const buildBar = async () => {
 
   Plotly.newPlot('costBarGraph', data, layout)
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  buildBar()
-})

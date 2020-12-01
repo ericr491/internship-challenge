@@ -8,7 +8,6 @@ const fetchAllCancer = async () => {
     }
   })
   const json = await res.json()
-  console.log(json)
   return json
 }
 
@@ -20,6 +19,5 @@ const fetchBreastCancer = async () => {
     }
   })
   const json = await res.json()
-  console.log(json)
   return json
 }

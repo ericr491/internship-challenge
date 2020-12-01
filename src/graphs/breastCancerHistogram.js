@@ -11,31 +11,24 @@ const buildPlot = async () => {
     '70 or Older',
   ]
 
-  const count = [
+  // counts the number of occurences for each age group
+  let count = [
   ]
 
+  ages.forEach(age_group => {
+    count.push(
+      filtered.reduce((count, age) => {
+        if (age === age_group)
+          return count + 1
+        return count
+      }, 0)
+    )
+  })
+
   if (document.getElementById('checkbox2').checked) {
-    ages.forEach(age_group => {
-      count.push(
-        filtered.reduce((count, age) => {
-          if (age === age_group)
-            return count + 1
-          return count
-        }, 0) / filtered.length
-      )
-    })
-  } else {
-    // counts the number of occurences for each age group
-    ages.forEach(age_group => {
-      count.push(
-        filtered.reduce((count, age) => {
-          if (age === age_group)
-            return count + 1
-          return count
-        }, 0)
-      )
-    })
+    count = count.map(total => total / filtered.length)
   }
+
   console.log(count)
 
   const data = [
@@ -61,6 +54,9 @@ const buildPlot = async () => {
   Plotly.newPlot('breastCancerHistogram', data, layout)
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  buildPlot()
-})
+
+window.onload = async () => {
+  await buildPlot()
+  await buildBar()
+  await buildStackedBar()
+}
